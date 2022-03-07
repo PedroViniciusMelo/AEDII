@@ -27,3 +27,51 @@ void preorder(arvore a){
         preorder(a->direito);
     }
 }
+
+void inorder(arvore a){
+    if(a != NULL){
+        inorder(a->esquerdo);
+        printf("[%d]", a->valor);
+        inorder(a->direito);
+    }
+}
+
+void posorder(arvore a){
+    if(a != NULL){
+        posorder(a->esquerdo);
+        posorder(a->direito);
+        printf("[%d]", a->valor);
+    }
+}
+
+void reverso(arvore a){
+    if(a != NULL){
+        reverso(a->direito);
+        printf("[%d]", a->valor);
+        reverso(a->esquerdo);
+    }
+}
+
+int contaPrimos (arvore a, int val){
+    if(a != NULL){
+        contaPrimos(a->esquerdo, val);
+        contaPrimos(a->direito, val);
+
+        int divisores = 0;
+
+        for (int i = 2; i <= a->valor; ++i) {
+            if (a->valor % i == 0) {
+                divisores++;
+            }
+        }
+        printf("%d ", a->valor);
+        if(divisores == 1){
+            printf("%d", a->valor);
+        }
+        return divisores == 1 ? val + 1 : val;
+    }
+    return val;
+}
+int qtdPrimo(arvore a){
+    return contaPrimos(a, 0);
+}
