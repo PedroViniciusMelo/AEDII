@@ -16,9 +16,21 @@ int main(int argc, char const *argv[])
     a = inserir(a, 84);
     a = inserir(a, 83);
     a = inserir(a, 86);
+    a = inserir(a, 12);
     a = inserir(a, 82);
     a = inserir(a, 43);
     a = inserir(a, 42);
+
+    /*a = inserir(a, 45);
+    a = inserir(a, 43);
+    a = inserir(a, 42);
+    a = inserir(a, 80);
+    a = inserir(a, 79);
+    a = inserir(a, 84);
+    a = inserir(a, 83);
+    a = inserir(a, 86);
+    a = inserir(a, 82);*/
+
     printf("Preorder: \n");
     preorder(a);
     printf("\nInorder:\n");
@@ -27,8 +39,12 @@ int main(int argc, char const *argv[])
     posorder(a);
     printf("\nReverso:\n");
     reverso(a);
-    printf("\nContaPrimo:\n");
-    printf("%d", qtdPrimo(a));
+    printf("\nQuantidade de primos:\n");
+    printf("[%d]", qtdPrimo(a));
+    printf("\nSucessor:\n");
+    printf("%d", sucessor(100, a));
+    printf("\nRemover:\n");
+    a = remover(32, a);
 
     return 0;
 }

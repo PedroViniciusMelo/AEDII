@@ -14,6 +14,12 @@ void inorder(arvore a);
 void posorder(arvore a);
 void reverso(arvore a);
 int qtdPrimo(arvore a);
+int sucessor(int n, arvore a);
+int caminho(int n, arvore a);
+arvore remover(int n, arvore a);
+arvore busca(int n, arvore a);
+arvore menorNo(arvore a);
+arvore maiorNo(arvore a);
 //função remover
 //calcular altura da árvore
 //função de posorder
