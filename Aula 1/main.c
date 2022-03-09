@@ -4,7 +4,6 @@
 
 int main(int argc, char const *argv[])
 {
-
     int opcao;
     int valor;
 

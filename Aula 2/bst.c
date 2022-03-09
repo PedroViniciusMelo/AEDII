@@ -4,7 +4,7 @@
 
 arvore inserir(arvore a, int v){
     //Caso base de recursão
-    //inserir.in numa (sub)árvore vazia
+    //1.in numa (sub)árvore vazia
     if (a == NULL){
         //alocar espaço para o nó
         arvore no = (arvore) malloc(sizeof(no));
@@ -14,8 +14,8 @@ arvore inserir(arvore a, int v){
         no->dir = NULL;
         return no;
     } else{
-        //Se o valor que eu quero inserir.in (v) for
-        //menor que a raiz relativa (a->valore), inserir.in na
+        //Se o valor que eu quero 1.in (v) for
+        //menor que a raiz relativa (a->valore), 1.in na
         //sub-árvore a esquerda
         if(v<a->valor){
             a->esq = inserir(a->esq, v);

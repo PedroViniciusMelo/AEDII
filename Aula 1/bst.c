@@ -78,16 +78,6 @@ arvore busca(int n, arvore a){
     return a;
 }
 
-int contaPrimos (arvore a, int val){
-    if(a != NULL){
-        contaPrimos(a->esquerdo, val);
-        contaPrimos(a->direito, val);
-
-        return isPrimo(a->valor) ? val + 1 : val;
-    }
-    return val;
-}
-
 int qtdPrimo(arvore a){
     if(a == NULL){
         return 0;
@@ -132,7 +122,6 @@ void caminho(int n, arvore a){
 }
 
 //Retonra o maior nó entre os dois nós mais próximos da raiz na esquerda
-
 arvore maiorNo(arvore a){
     if(a->esquerdo != NULL && a->direito != NULL){
         int valor_esquerdo = a->esquerdo->valor, valor_direito = a->direito->valor, valor_atual = a->valor;
