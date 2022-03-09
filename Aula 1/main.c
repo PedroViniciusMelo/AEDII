@@ -1,52 +1,58 @@
 #include "bst.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(int argc, char const *argv[])
 {
-    arvore a;
-    //Inicialização da árvore vazia
-    a = NULL;
-    a = inserir(a, 32);
-    a = inserir(a, 45);
-    a = inserir(a, 20);
-    a = inserir(a, 11);
-    a = inserir(a, 12);
-    a = inserir(a, 80);
-    a = inserir(a, 79);
-    a = inserir(a, 84);
-    a = inserir(a, 83);
-    a = inserir(a, 86);
-    a = inserir(a, 12);
-    a = inserir(a, 82);
-    a = inserir(a, 43);
-    a = inserir(a, 42);
 
-    /*a = inserir(a, 45);
-    a = inserir(a, 43);
-    a = inserir(a, 42);
-    a = inserir(a, 80);
-    a = inserir(a, 79);
-    a = inserir(a, 84);
-    a = inserir(a, 83);
-    a = inserir(a, 86);
-    a = inserir(a, 82);*/
+    int opcao;
+    int valor;
 
-    printf("Preorder: \n");
-    preorder(a);
-    printf("\nInorder:\n");
-    inorder(a);
-    printf("\nPosorder:\n");
-    posorder(a);
-    printf("\nReverso:\n");
-    reverso(a);
-    printf("\nPrimos:\n");
-    printf("%d", qtdPrimo(a));
-    printf("\nCaminho:\n");
-    caminho(80, a);
-    printf("\nSucessor:\n");
-    printf("%d", sucessor(80, a));
+    arvore a = NULL;
 
-    a = remover(32, a);
-
-    return 0;
+    while(1){
+        scanf("%d", &opcao);
+        switch (opcao) {
+            case 1:
+                scanf("%d", &valor);
+                a = inserir(a, valor);
+                break;
+            case 2:
+                preorder(a);
+                printf("\n");
+                break;
+            case 3:
+                inorder(a);
+                printf("\n");
+                break;
+            case 4:
+                posorder(a);
+                printf("\n");
+                break;
+            case 5:
+                reverso(a);
+                printf("\n");
+                break;
+            case 6:
+                printf("%d", qtdPrimo(a));
+                printf("\n");
+                break;
+            case 7:
+                scanf("%d", &valor);
+                printf("%d", sucessor(valor, a));
+                printf("\n");
+                break;
+            case 8:
+                scanf("%d", &valor);
+                caminho(valor, a);
+                printf("\n");
+                break;
+            case 9:
+                scanf("%d", &valor);
+                a = remover(valor, a);
+                break;
+            case 99:
+                exit(0);
+        }
+    }
 }

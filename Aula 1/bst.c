@@ -52,7 +52,7 @@ void reverso(arvore a){
     }
 }
 
-int isPrimo(valor){
+int isPrimo(int valor){
     int divisores = 0;
 
     for (int i = 2; i <= valor; ++i) {
@@ -90,11 +90,10 @@ int contaPrimos (arvore a, int val){
 
 int qtdPrimo(arvore a){
     if(a == NULL){
-        return NULL;
+        return 0;
     }
 
     if(isPrimo(a->valor)){
-        printf("%d ", a->valor);
         return 1;
     }
 
@@ -104,11 +103,15 @@ int qtdPrimo(arvore a){
 int sucessor(int n, arvore a){
     arvore encontrado = busca(n, a);
 
-    arvore hold = menorNo(encontrado->direito);
-    if(hold == NULL){
+    if(encontrado == NULL){
         return -1;
     }else{
-        return hold->valor;
+        arvore hold = menorNo(encontrado->direito);
+        if(hold == NULL){
+            return -1;
+        }else{
+            return hold->valor;
+        }
     }
 }
 

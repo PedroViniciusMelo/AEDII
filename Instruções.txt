@@ -1,0 +1,6 @@
+Para compilar, navegue para uma pasta e use o comando:
+
+gcc *.c -o bst
+
+Para usar um arquivo de teste, use o comando abaixo, alterando entre os arquivos que quer usar.
+./bst < testes/inserir.in
