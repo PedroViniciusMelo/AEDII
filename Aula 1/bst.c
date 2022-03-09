@@ -104,11 +104,28 @@ int qtdPrimo(arvore a){
 int sucessor(int n, arvore a){
     arvore encontrado = busca(n, a);
 
-    return menorNo(encontrado->direito)->valor;
+    arvore hold = menorNo(encontrado->direito);
+    if(hold == NULL){
+        return -1;
+    }else{
+        return hold->valor;
+    }
 }
 
-int caminho(int n, arvore a){
+void caminho(int n, arvore a){
+    if(a != NULL){
+        if(a->valor == n){
+            printf("[%d]", a->valor);
+        }
 
+        if(a->valor > n){
+            printf("[%d]", a->valor);
+            caminho(n, a->esquerdo);
+        }else if(a->valor < n){
+            printf("[%d]", a->valor);
+            caminho(n, a->direito);
+        }
+    }
 }
 
 //Retonra o maior nó entre os dois nós mais próximos da raiz na esquerda
@@ -139,10 +156,13 @@ arvore maiorNo(arvore a){
 
 //Busca o menor nó na direita
 arvore menorNo(arvore a){
-    if(a->esquerdo == NULL){
-        return a;
+    if(a != NULL){
+        if(a->esquerdo == NULL){
+            return a;
+        }
+        return menorNo(a->esquerdo);
     }
-    return menorNo(a->esquerdo);
+    return NULL;
 }
 
 arvore remover(int n, arvore a){

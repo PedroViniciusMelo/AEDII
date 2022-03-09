@@ -39,11 +39,13 @@ int main(int argc, char const *argv[])
     posorder(a);
     printf("\nReverso:\n");
     reverso(a);
-    printf("\nQuantidade de primos:\n");
-    printf("[%d]", qtdPrimo(a));
+    printf("\nPrimos:\n");
+    printf("%d", qtdPrimo(a));
+    printf("\nCaminho:\n");
+    caminho(80, a);
     printf("\nSucessor:\n");
-    printf("%d", sucessor(100, a));
-    printf("\nRemover:\n");
+    printf("%d", sucessor(80, a));
+
     a = remover(32, a);
 
     return 0;
