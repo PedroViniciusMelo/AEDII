@@ -84,25 +84,34 @@ int qtdPrimo(arvore a){
     }
 
     if(isPrimo(a->valor)){
-        return 1;
+        return 1 + qtdPrimo(a->esquerdo) + qtdPrimo(a->direito);
     }
 
-    return qtdPrimo(a->esquerdo) + qtdPrimo(a->direito);
+    return 0 + qtdPrimo(a->esquerdo) + qtdPrimo(a->direito);
 }
 
 int sucessor(int n, arvore a){
     arvore encontrado = busca(n, a);
 
-    if(encontrado == NULL){
-        return -1;
-    }else{
-        arvore hold = menorNo(encontrado->direito);
-        if(hold == NULL){
-            return -1;
+    if(encontrado != NULL){
+        if(encontrado->valor >= a->valor){
+            arvore hold = menorNo(encontrado->direito);
+            return hold == NULL ? -1 : hold->valor;
         }else{
-            return hold->valor;
+            arvore sucessor = NULL;
+            arvore valor_atual = a;
+            while(valor_atual != encontrado){
+                if(encontrado->valor < valor_atual->valor){
+                    sucessor = valor_atual;
+                    valor_atual = valor_atual->esquerdo;
+                } else {
+                    valor_atual = valor_atual->direito;
+                }
+            }
+            return sucessor->valor;
         }
     }
+    return -1;
 }
 
 void caminho(int n, arvore a){
@@ -121,29 +130,15 @@ void caminho(int n, arvore a){
     }
 }
 
-//Retonra o maior nó entre os dois nós mais próximos da raiz na esquerda
+//Retorna o maior nó entre os dois nós mais próximos da raiz na esquerda
 arvore maiorNo(arvore a){
-    if(a->esquerdo != NULL && a->direito != NULL){
-        int valor_esquerdo = a->esquerdo->valor, valor_direito = a->direito->valor, valor_atual = a->valor;
-
-        if(!(valor_direito > valor_atual && valor_esquerdo < valor_direito)){
-            return maiorNo(a->direito);
-        }else{
-            return maiorNo(a->esquerdo);
+    if(a != NULL){
+        if(a->direito == NULL){
+            return a;
         }
-    }else if(a->esquerdo != NULL && a->direito == NULL){
-        if(a->esquerdo->valor > a->valor){
-            return maiorNo(a->esquerdo);
-        }
-        return a;
-    }else if(a->direito != NULL && a->esquerdo == NULL){
-        if(a->direito->valor > a->valor){
-            return maiorNo(a->direito);
-        }
-        return a;
-    }else{
-        return a;
+        return maiorNo(a->direito);
     }
+    return NULL;
 }
 
 //Busca o menor nó na direita
@@ -181,21 +176,19 @@ arvore remover(int n, arvore a){
         }
 
         if(a->esquerdo != NULL && a->direito != NULL){
-            arvore maiorElemento = maiorNo(a);
+            arvore maiorElemento = maiorNo(a->esquerdo);
             a->valor = maiorElemento->valor;
 
-            if(a->esquerdo->valor > a->direito->valor){
-                a->direito = remover(maiorElemento->valor, a->direito);
-            }else{
-                a-> esquerdo = remover(maiorElemento->valor, a->esquerdo);
-            }
+            a-> esquerdo = remover(maiorElemento->valor, a->esquerdo);
+
             return a;
         }
     }else{
-
-        a->esquerdo = remover(n, a->esquerdo);
-        a->direito = remover(n, a->direito);
-
+        if(n < a->valor){
+            a->esquerdo = remover(n, a->esquerdo);
+        }else{
+            a->direito = remover(n, a->direito);
+        }
         return a;
     }
 }
