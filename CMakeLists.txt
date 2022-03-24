@@ -3,4 +3,4 @@ project(AEDII C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(AED2 "Aula 1/main.c" "Aula 1/bst.c" "Aula 1/bst.h" "helper.c")
+add_executable(AED2 "Aula 2/avl.c" "Aula 2/avl.h" "Aula 2/main.c")

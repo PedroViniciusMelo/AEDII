@@ -50,6 +50,10 @@ int main(int argc, char const *argv[])
                 scanf("%d", &valor);
                 a = remover(valor, a);
                 break;
+            case 10:
+                printf("%d", altura(a));
+                printf("\n");
+                break;
             case 99:
                 exit(0);
         }
