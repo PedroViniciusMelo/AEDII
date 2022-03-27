@@ -2,51 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void preorder(arvore a){
-    if(a != NULL){
-        printf("[%d]", a->valor);
-        preorder(a->esquerdo);
-        preorder(a->direito);
-    }
-}
-
-void inorder(arvore a){
-    if(a != NULL){
-        inorder(a->esquerdo);
-        printf("[%d]", a->valor);
-        inorder(a->direito);
-    }
-}
-
-void posorder(arvore a){
-    if(a != NULL){
-        posorder(a->esquerdo);
-        posorder(a->direito);
-        printf("[%d]", a->valor);
-    }
-}
-
-void reverso(arvore a){
-    if(a != NULL){
-        reverso(a->direito);
-        printf("[%d]", a->valor);
-        reverso(a->esquerdo);
-    }
-}
-
-int isPrimo(int valor){
-    int divisores = 0;
-
-    for (int i = 2; i <= valor; ++i) {
-        if (valor % i == 0) {
-            divisores++;
-        }
-    }
-
-    return divisores == 1;
-}
-
-arvore busca(int n, arvore a){
+arvore busca(tipo_dado n, arvore a){
     if(a != NULL){
         if(a->valor == n){
             return a;
@@ -60,59 +16,6 @@ arvore busca(int n, arvore a){
     return a;
 }
 
-int qtdPrimo(arvore a){
-    if(a == NULL){
-        return 0;
-    }
-
-    if(isPrimo(a->valor)){
-        return 1 + qtdPrimo(a->esquerdo) + qtdPrimo(a->direito);
-    }
-
-    return 0 + qtdPrimo(a->esquerdo) + qtdPrimo(a->direito);
-}
-
-int sucessor(int n, arvore a){
-    arvore encontrado = busca(n, a);
-
-    if(encontrado != NULL){
-        if(encontrado->valor >= a->valor){
-            arvore hold = menorNo(encontrado->direito);
-            return hold == NULL ? -1 : hold->valor;
-        }else{
-            arvore sucessor = NULL;
-            arvore valor_atual = a;
-            while(valor_atual != encontrado){
-                if(encontrado->valor < valor_atual->valor){
-                    sucessor = valor_atual;
-                    valor_atual = valor_atual->esquerdo;
-                } else {
-                    valor_atual = valor_atual->direito;
-                }
-            }
-            return sucessor->valor;
-        }
-    }
-    return -1;
-}
-
-void caminho(int n, arvore a){
-    if(a != NULL){
-        if(a->valor == n){
-            printf("[%d]", a->valor);
-        }
-
-        if(a->valor > n){
-            printf("[%d]", a->valor);
-            caminho(n, a->esquerdo);
-        }else if(a->valor < n){
-            printf("[%d]", a->valor);
-            caminho(n, a->direito);
-        }
-    }
-}
-
-//Retorna o maior nó entre os dois nós mais próximos da raiz na esquerda
 arvore maiorNo(arvore a){
     if(a != NULL){
         if(a->direito == NULL){
@@ -123,7 +26,6 @@ arvore maiorNo(arvore a){
     return NULL;
 }
 
-//Busca o menor nó na direita
 arvore menorNo(arvore a){
     if(a != NULL){
         if(a->esquerdo == NULL){
@@ -132,6 +34,20 @@ arvore menorNo(arvore a){
         return menorNo(a->esquerdo);
     }
     return NULL;
+}
+
+void imprimir_elemento(arvore raiz) {
+    printf("%d [%d]", raiz->valor, raiz->ftBalanco);
+}
+
+void imprimir(arvore raiz) {
+    printf("(");
+    if(raiz != NULL) {
+        imprimir_elemento(raiz);
+        imprimir(raiz->esquerdo);
+        imprimir(raiz->direito);
+    }
+    printf(")");
 }
 
 arvore rotacaoDireita(arvore pivot){
@@ -170,23 +86,6 @@ arvore rotacaoEsquerda(arvore pivot){
     }
 
     return u;
-}
-
-/*---
-Auxiliar de imprimir
----*/
-void imprimir_elemento(arvore raiz) {
-    printf("%d [%d]", raiz->valor, raiz->ftBalanco);
-}
-
-void imprimir(arvore raiz) {
-    printf("(");
-    if(raiz != NULL) {
-        imprimir_elemento(raiz);
-        imprimir(raiz->esquerdo);
-        imprimir(raiz->direito);
-    }
-    printf(")");
 }
 
 arvore rotacaoDuplaDireita(arvore pivot){
@@ -262,7 +161,7 @@ arvore rotacaoDuplaEsquerda(arvore pivot){
 }
 
 arvore rotacionar(arvore pivot){
-    if(pivot->ftBalanco >= 1){
+    if(pivot->ftBalanco > 0){
         //Desbalanceada na direita, necessário rotação para esquerda
         switch (pivot->direito->ftBalanco) {
             //Verificando oscs
@@ -283,7 +182,7 @@ arvore rotacionar(arvore pivot){
     }
 }
 
-arvore inserir(arvore subarvore, int valor, int *cresceu){
+arvore inserir(arvore subarvore, tipo_dado valor, int *cresceu){
     //Caso base de recursão
     if (subarvore == NULL){
         arvore no = (arvore) malloc(sizeof(no));
@@ -371,34 +270,33 @@ arvore remover (tipo_dado valor, arvore raiz, int *diminuiu) {
             arvore maiorElemento = maiorNo(raiz->esquerdo);
             raiz->valor = maiorElemento->valor;
 
-            //Erro está aqui, o fator de balanço não é atualizado nesse returnn da função remover
             raiz->esquerdo = remover(maiorElemento->valor, raiz->esquerdo, diminuiu);
+
+            if(*diminuiu == 1){
+                switch (raiz->ftBalanco) {
+                    case 0:
+                        raiz->ftBalanco = 1;
+                        *diminuiu = 0;
+                        break;
+                    case -1:
+                        raiz->ftBalanco = 0;
+                        *diminuiu = 1;
+                        break;
+                    case 1:
+                        if(raiz->direito->ftBalanco != 0){
+                            *diminuiu = 1;
+                        }else{
+                            *diminuiu = 0;
+                        }
+                        return rotacionar(raiz);
+                }
+            }
 
             return raiz;
         }
     }
 
-    if(valor > raiz->valor){
-        raiz->direito = remover(valor, raiz->direito, diminuiu);
-        //     verifica se a árvore diminuiu e ajusta os fatores de balanço
-
-        if(*diminuiu){
-            //Propriedade que se aplica a todos os nós
-            switch (raiz->ftBalanco) {
-                case 0:
-                    raiz->ftBalanco = -1;
-                    *diminuiu = 0;
-                    break;
-                case -1:
-                    *diminuiu = 1;
-                    return rotacionar(raiz);
-                case 1:
-                    raiz->ftBalanco = 0;
-                    *diminuiu = 1;
-                    break;
-            }
-        }
-    }else{
+    if(valor < raiz->valor){
         raiz->esquerdo = remover(valor, raiz->esquerdo, diminuiu);
         if(*diminuiu){
             //Propriedade que se aplica a todos os nós
@@ -412,29 +310,41 @@ arvore remover (tipo_dado valor, arvore raiz, int *diminuiu) {
                     *diminuiu = 1;
                     break;
                 case 1:
-                    *diminuiu = 1;
+                    if(raiz->direito->ftBalanco != 0){
+                        *diminuiu = 1;
+                    }else{
+                        *diminuiu = 0;
+                    }
+
                     return rotacionar(raiz);
+            }
+        }
+    }else{
+        raiz->direito = remover(valor, raiz->direito, diminuiu);
+        //     verifica se a árvore diminuiu e ajusta os fatores de balanço
+
+        if(*diminuiu){
+            //Propriedade que se aplica a todos os nós
+            switch (raiz->ftBalanco) {
+                case 0:
+                    raiz->ftBalanco = -1;
+                    *diminuiu = 0;
+                    break;
+                case -1:
+                    if(raiz->esquerdo->ftBalanco != 0){
+                        *diminuiu = 1;
+                    }else{
+                        *diminuiu = 0;
+                    }
+                    return rotacionar(raiz);
+                case 1:
+                    raiz->ftBalanco = 0;
+                    *diminuiu = 1;
+                    break;
             }
         }
     }
 
 
     return raiz;
-}
-
-int altura(arvore a){
-    if (a == NULL)
-        return 0;
-    return a->ftBalanco;
-}
-
-int fatorDeBalanco(arvore a)
-{
-    if (a == NULL)
-        return 0;
-    return altura(a->direito) - altura(a->esquerdo);
-}
-
-int max(int maxEsquerdo, int maxDireito){
-    return (maxEsquerdo > maxDireito) ? maxEsquerdo : maxDireito;
 }
