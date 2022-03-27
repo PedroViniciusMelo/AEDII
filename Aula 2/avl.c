@@ -96,12 +96,11 @@ arvore rotacaoDuplaDireita(arvore pivot){
     arvore t3 = v->direito;
     arvore t4 = pivot->direito;
 
-    u->direito = t1;
-    u->esquerdo = t2;
+    pivot->esquerdo = v;
     v->esquerdo = u;
-    v->direito = t3;
+    u->direito = t2;
 
-    pivot->esquerdo = v->direito;
+    pivot->esquerdo = t3;
     v->direito = pivot;
 
     switch (v->ftBalanco) {
@@ -132,12 +131,11 @@ arvore rotacaoDuplaEsquerda(arvore pivot){
     arvore t3 = v->direito;
     arvore t4 = u->direito;
 
-    u->direito = t4;
-    u->esquerdo = t3;
-    v->esquerdo = t2;
+    pivot->direito = v;
     v->direito = u;
+    u->esquerdo = t3;
 
-    pivot->direito = v->esquerdo;
+    pivot->direito = t2;
     v->esquerdo = pivot;
 
     switch (v->ftBalanco) {
@@ -174,10 +172,10 @@ arvore rotacionar(arvore pivot){
     }else{
         switch (pivot->esquerdo->ftBalanco) {
             case 0:
-            case 1:
-                return rotacaoDuplaDireita(pivot);
             case -1:
                 return rotacaoDireita(pivot);
+            case 1:
+                return rotacaoDuplaDireita(pivot);
         }
     }
 }
