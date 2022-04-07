@@ -48,17 +48,22 @@ int main(int argc, char * argv[]) {
     adicionar(25, &a);
     printBT("",a, 0);
     adicionar(30, &a);
+    printBT("",a, 0);
     adicionar(40, &a);
+    printBT("",a, 0);
     adicionar(7, &a);
     adicionar(24, &a);
     adicionar(14, &a);
     adicionar(9, &a);
+    printBT("",a, 0);
     adicionar(19, &a);
-    adicionar(25, &a);
     adicionar(43, &a);
+    printBT("",a, 0);
     adicionar(11, &a);
+    printBT("",a, 0);
     adicionar(1, &a);
     adicionar(33, &a);
+    printBT("",a, 0);
     adicionar(38, &a);
 
     printBT("", a, 0);
