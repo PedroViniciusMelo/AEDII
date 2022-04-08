@@ -39,77 +39,66 @@ void printBT(char* string, arvore arvore, int isRight){
 int main(int argc, char * argv[]) {
 	arvore a = NULL;
 	int opcao;
-	inicializar(&a);
+    inicializar(&a);
 
+    /*adicionar(10, &a);
     adicionar(20, &a);
+    adicionar(5, &a);
+    adicionar(22, &a);
+    adicionar(15, &a);
+    adicionar(2, &a);
+    adicionar(9, &a);
+    adicionar(18, &a);
+    adicionar(30, &a);
+    adicionar(1, &a);
+    adicionar(40, &a);
+    adicionar(35, &a);
+    adicionar(25, &a);
+    adicionar(8, &a);
+    adicionar(4, &a);*/
+
+    /*adicionar(20, &a);
     adicionar(15, &a);
     adicionar(8, &a);
-    printBT("",a, 0);
     adicionar(25, &a);
-    printBT("",a, 0);
     adicionar(30, &a);
-    printBT("",a, 0);
     adicionar(40, &a);
-    printBT("",a, 0);
     adicionar(7, &a);
     adicionar(24, &a);
     adicionar(14, &a);
     adicionar(9, &a);
-    printBT("",a, 0);
     adicionar(19, &a);
     adicionar(43, &a);
-    printBT("",a, 0);
     adicionar(11, &a);
-    printBT("",a, 0);
     adicionar(1, &a);
     adicionar(33, &a);
-    printBT("",a, 0);
     adicionar(38, &a);
 
-    printBT("", a, 0);
-    imprimir(a);
+    printBT("",a, 0);*/
 
-	/*while(1) {
+	while(1) {
 		scanf("%d", &opcao);
 
 		switch(opcao) {
-				int valor;
-				case 1:
-						printf("%d\n", altura(a));
-						break;
-				case 2:
-						scanf("%d", &valor);
-						adicionar(valor, &a);
-						break;
-				case 3:
-						printf("%d\n", maior_elemento(a));
-						break;
-				case 4:
-						printf("%d\n", menor_elemento(a));
-						break;
-				case 5:
-						pre_order(a);
-						printf("\n");
-						break;
-				case 6:
-						in_order(a);
-						printf("\n");
-						break;
-				case 7:
-						pos_order(a);
-						printf("\n");
-						break;
-				case 8:
-						scanf("%d", &valor);
-						remover(valor, &a);
-						break;
-				case 9:
-						imprimir(a);
-						printf("\n");
-						break;
-
-				case 99:
-						exit(0);
+            int valor;
+            case 1:
+                scanf("%d", &valor);
+                adicionar(valor, &a);
+                break;
+            case 2:
+                scanf("%d", &valor);
+                remover(valor, &a);
+                break;
+            case 3:
+                imprimir(a);
+                printf("\n");
+                break;
+            case 4:
+                printBT("", a, 0);
+                printf("\n");
+                break;
+            case 99:
+                    exit(0);
 		}
-	}*/
+	}
 }
