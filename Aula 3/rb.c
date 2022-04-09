@@ -522,7 +522,8 @@ void reajustar(arvore *raiz, arvore elemento) {
         elemento->pai->cor = DUPLO_PRETO;
         irmao(elemento)->cor = VERMELHO;
 
-        reajustar(raiz, elemento);
+        retira_duplo_preto(raiz, elemento);
+        reajustar(raiz, elemento->pai);
 
         return;
     }
