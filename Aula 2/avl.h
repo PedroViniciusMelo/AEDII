@@ -17,5 +17,6 @@ arvore remover(tipo_dado n, arvore a, int* diminuiu);
 arvore busca(tipo_dado n, arvore a);
 arvore menorNo(arvore a);
 arvore maiorNo(arvore a);
+int altura(arvore a);
 
 #endif

@@ -24,6 +24,10 @@ int main(int argc, char * argv[]) {
                 imprimir(a);
                 printf("\n");
                 break;
+            case 10:
+                printf("%d", altura(a));
+                printf("\n");
+                break;
             case 99:
                 exit(0);
 		}

@@ -346,3 +346,18 @@ arvore remover (tipo_dado valor, arvore raiz, int *diminuiu) {
 
     return raiz;
 }
+
+int maior(int a, int b) {
+    if (a > b)
+        return a;
+    else
+        return b;
+}
+
+
+int altura(arvore raiz) {
+    if (raiz == NULL) {
+        return 0;
+    }
+    return 1 + maior(altura(raiz->direito), altura(raiz->esquerdo));
+}

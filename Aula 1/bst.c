@@ -193,17 +193,17 @@ arvore remover(int n, arvore a){
     }
 }
 
-int altura(arvore a){
-    if (a == NULL)
-        return -1;
-    else {
-        int maxEsquerdo = altura(a->esquerdo);
-        int maxDireito = altura(a->direito);
-
-        return max(maxEsquerdo, maxDireito) + 1;
-    }
+int maior(int a, int b) {
+    if (a > b)
+        return a;
+    else
+        return b;
 }
 
-int max(int maxEsquerdo, int maxDireito){
-    return (maxEsquerdo > maxDireito) ? maxEsquerdo : maxDireito;
+
+int altura(arvore raiz) {
+    if (raiz == NULL) {
+        return 0;
+    }
+    return 1 + maior(altura(raiz->direito), altura(raiz->esquerdo));
 }
