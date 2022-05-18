@@ -1,0 +1,17 @@
+6 9
+U
+V
+W
+X
+Y
+Z
+UX
+UV
+XV
+VY
+VW
+YX
+WY
+WZ
+ZZ
+

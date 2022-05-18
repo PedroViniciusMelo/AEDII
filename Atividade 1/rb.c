@@ -546,11 +546,11 @@ void remover(int valor, arvore *raiz) {
     posicao = *raiz;
 
     while (posicao != NULL) {
-        if (valor == posicao->valor) {
+        if (valor == posicao->valor->chave) {
             //elemento possui dois filhos
             if (posicao->esquerdo != NULL && posicao->direito != NULL) {
                 posicao->valor = maior_elemento(posicao->esquerdo);
-                remover(posicao->valor, &(posicao->esquerdo));
+                remover(posicao->valor->chave, &(posicao->esquerdo));
                 break;
             }
 
@@ -612,7 +612,7 @@ void remover(int valor, arvore *raiz) {
                 }
             }
         }
-        if (valor > posicao->valor)
+        if (valor > posicao->valor->chave)
             posicao = posicao->direito;
         else
             posicao = posicao->esquerdo;
