@@ -94,8 +94,8 @@ public class GrafoListaDeAdjacencia {
 
     public void MST_KRUSKAL(){
         Conjunto[] conjuntos = new Conjunto[quantidadeDeVertices];
-        LinkedList<Aresta> holdArestas = new LinkedList<Aresta>();
-        Aresta[] resultado = new Aresta[quantidadeDeVertices];
+        LinkedList<Aresta> arestas = new LinkedList<Aresta>();
+        LinkedList<Aresta> resultado = new LinkedList<Aresta>();
 
         int count = 0;
         for (Character item: vertices) {
@@ -105,22 +105,22 @@ public class GrafoListaDeAdjacencia {
 
         for (LinkedList<Aresta> hold : this.listaDeAdjacencia) {
             for (Aresta aresta : hold){
-                if(!holdArestas.contains(aresta)){
-                    holdArestas.add(aresta);
+                if(!arestas.contains(aresta)){
+                    arestas.add(aresta);
                 }
             }
         }
 
-        Collections.sort(holdArestas);
+        Collections.sort(arestas);
 
-        for (int i = 0; i < quantidadeDeVertices; i++){
-            Aresta proximaAresta = holdArestas.get(i);
+        for (int i = 0, e = 0; i < arestas.size(); i++, e++){
+            Aresta proximaAresta = arestas.get(i);
 
             Conjunto x = find(conjuntos, proximaAresta.vertice1);
             Conjunto y = find(conjuntos, proximaAresta.vertice2);
 
             if (!x.equals(y)) {
-                resultado[i] = proximaAresta;
+                resultado.add(proximaAresta);
                 Union(conjuntos, x, y);
             }
         }
