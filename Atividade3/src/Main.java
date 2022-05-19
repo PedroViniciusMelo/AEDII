@@ -21,7 +21,7 @@ public class Main {
         for (int i = 0; i < quantidadeDeArestas; i++) {
             String item =  scanner.next();
             int value = scanner.nextInt();
-            arestas[i] = new Aresta(value, item.substring(0, 2));
+            arestas[i] = new Aresta(value, item.charAt(0), item.charAt(1));
         }
 
         GrafoMatrizDeAdjacencia grafoMatrizDeAdjacencia = new GrafoMatrizDeAdjacencia(vertices, arestas);
@@ -33,6 +33,7 @@ public class Main {
         System.out.println("Grafo com matriz de Adjacência: \n");
         grafoMatrizDeAdjacencia.BFS('S');
         System.out.println("Grafo com lista de adjacências: \n");
+        grafoListaDeAdjacencia.MST_KRUSKAL();
         //grafoListaDeAdjacencia.DFS();
     }
 }

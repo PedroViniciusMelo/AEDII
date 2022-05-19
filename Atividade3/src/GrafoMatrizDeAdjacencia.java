@@ -32,11 +32,8 @@ public class GrafoMatrizDeAdjacencia {
 
         //Carregamento das arestas
         for (Aresta aresta : arestas) {
-            char vertice1 = aresta.aresta.charAt(0);
-            char vertice2 = aresta.aresta.charAt(1);
-
-            int posicaoVertice1 = this.vertices.indexOf(vertice1);
-            int posicaoVertice2 = this.vertices.indexOf(vertice2);
+            int posicaoVertice1 = this.vertices.indexOf(aresta.vertice1);
+            int posicaoVertice2 = this.vertices.indexOf(aresta.vertice2);
 
             matrizDeAdjacencia[posicaoVertice1][posicaoVertice2] = aresta.peso;
             matrizDeAdjacencia[posicaoVertice2][posicaoVertice1] = aresta.peso;
