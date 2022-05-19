@@ -1,19 +1,19 @@
 public class Aresta implements Comparable<Aresta>{
     int peso;
 
-    Character vertice1;
+    Character inicio;
 
-    Character vertice2;
+    Character fim;
 
-    public Aresta(int peso, Character vertice1, Character vertice2){
+    public Aresta(int peso, Character inicio, Character fim){
         this.peso = peso;
-        this.vertice1 = vertice1;
-        this.vertice2 = vertice2;
+        this.inicio = inicio;
+        this.fim = fim;
     }
 
     @Override
     public String toString() {
-        return vertice2 + "[" + this.peso + "]";
+        return fim + "[" + this.peso + "]";
     }
 
 
@@ -34,6 +34,6 @@ public class Aresta implements Comparable<Aresta>{
 
         Aresta aresta = (Aresta) o;
 
-        return (this.vertice1 == aresta.vertice1 && this.vertice2 == aresta.vertice2) || (this.vertice2 == aresta.vertice1 && this.vertice1 == aresta.vertice2);
+        return (this.inicio == aresta.inicio && this.fim == aresta.fim) || (this.fim == aresta.inicio && this.inicio == aresta.fim);
     }
 }

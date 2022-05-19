@@ -32,8 +32,8 @@ public class GrafoMatrizDeAdjacencia {
 
         //Carregamento das arestas
         for (Aresta aresta : arestas) {
-            int posicaoVertice1 = this.vertices.indexOf(aresta.vertice1);
-            int posicaoVertice2 = this.vertices.indexOf(aresta.vertice2);
+            int posicaoVertice1 = this.vertices.indexOf(aresta.inicio);
+            int posicaoVertice2 = this.vertices.indexOf(aresta.fim);
 
             matrizDeAdjacencia[posicaoVertice1][posicaoVertice2] = aresta.peso;
             matrizDeAdjacencia[posicaoVertice2][posicaoVertice1] = aresta.peso;
@@ -46,52 +46,72 @@ public class GrafoMatrizDeAdjacencia {
         System.out.println("Predencessores: " + Arrays.toString(matrizParents));
     }
 
-    void BFS(char s) {
-
-        cores[] cor = new cores[quantidadeDeVertices];
-        Integer[] distancia = new Integer[quantidadeDeVertices];
-        Character[] pais = new Character[quantidadeDeVertices];
-
-
-        int hold = 0;
-        for (char item: vertices) {
-            cor[hold] = cores.BRANCO;
-            distancia[hold] = Integer.MAX_VALUE;
-            pais[hold] = null;
-            hold++;
+    int menor(LinkedList<Integer> list){
+        if(list.isEmpty()){
+          return -1;
+        }
+        int menor = list.get(0);
+        int indice = 0;
+        int count = 0;
+        for (int item : list) {
+            if(item < menor){
+                menor = item;
+                indice = count;
+            }
+            count++;
         }
 
+        list.remove(indice);
+        return menor;
+    }
 
-        int currentIndex = vertices.indexOf(s);
-        if(currentIndex == -1){
+    LinkedList<Aresta> getVizinhos(int s){
+        LinkedList<Aresta> vizinhos = new LinkedList<>();
+        for(int i = 0; i < this.quantidadeDeVertices; i++){
+            if(this.matrizDeAdjacencia[s][i] > 0 && i != s){
+                vizinhos.add(new Aresta(this.matrizDeAdjacencia[s][i], this.vertices.get(s), this.vertices.get(i)));
+            }
+        }
+        return vizinhos;
+    }
+
+    void MST_PRIM(char s) {
+        int[] chaves = new int[this.quantidadeDeVertices];
+        Character[] parents = new Character[this.quantidadeDeVertices];
+
+        Arrays.fill(chaves, Integer.MAX_VALUE);
+        Arrays.fill(parents, null);
+
+        int selecionado = this.vertices.indexOf(s);
+
+        if(selecionado == -1){
             return;
         }
 
-        cor[currentIndex] = cores.CINZA;
-        distancia[currentIndex] = 0;
+        chaves[selecionado] = 0;
 
         LinkedList<Integer> fila = new LinkedList<>();
-        fila.add(currentIndex);
-
-        while (fila.size() != 0)
-        {
-            int u = fila.poll();
-
-            //Variável de incremento
-            int verticePosition = 0;
-            for (int v: matrizDeAdjacencia[u]) {
-                if(v == 1 && cor[verticePosition].equals(cores.BRANCO)){
-                    cor[verticePosition] = cores.CINZA;
-                    distancia[verticePosition] = distancia[u] + 1;
-                    pais[verticePosition] = vertices.get(u);
-                    fila.add(verticePosition);
-                }
-                verticePosition++;
+        fila.add(selecionado);
+        for (int i = 0; i < quantidadeDeVertices; i++){
+            if(i != selecionado){
+                fila.add(i);
             }
-            cor[u] = cores.PRETO;
         }
 
-        printItems(cor, distancia, pais);
+
+        while (!fila.isEmpty()) {
+            int min = menor(fila);
+
+            for (Aresta aresta : getVizinhos(min)) {
+                int indexFim = this.vertices.indexOf(aresta.fim);
+                if(fila.contains(indexFim) && aresta.peso < chaves[indexFim]){
+                    parents[indexFim] = this.vertices.get(min);
+                    chaves[indexFim] = aresta.peso;
+                }
+            }
+        }
+        System.out.println("Parents :" + Arrays.toString(parents));
+        System.out.println("Keys :" + Arrays.toString(chaves));
     }
 
     @Override

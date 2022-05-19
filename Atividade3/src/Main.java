@@ -31,7 +31,7 @@ public class Main {
         System.out.println("Grafo com lista de adjacências: ");
         System.out.println(grafoListaDeAdjacencia);
         System.out.println("Grafo com matriz de Adjacência: \n");
-        grafoMatrizDeAdjacencia.BFS('S');
+        grafoMatrizDeAdjacencia.MST_PRIM('A');
         System.out.println("Grafo com lista de adjacências: \n");
         grafoListaDeAdjacencia.MST_KRUSKAL();
         //grafoListaDeAdjacencia.DFS();

@@ -67,11 +67,11 @@ public class GrafoListaDeAdjacencia {
         }
 
         for (Aresta aresta : arestas) {
-            int indiceVertice1 = this.vertices.indexOf(aresta.vertice1);
-            int indiceVertice2 = this.vertices.indexOf(aresta.vertice2);
+            int indiceVertice1 = this.vertices.indexOf(aresta.inicio);
+            int indiceVertice2 = this.vertices.indexOf(aresta.fim);
 
-            listaDeAdjacencia[indiceVertice1].add(new Aresta(aresta.peso, aresta.vertice1, aresta.vertice2));
-            listaDeAdjacencia[indiceVertice2].add(new Aresta(aresta.peso, aresta.vertice2, aresta.vertice1));
+            listaDeAdjacencia[indiceVertice1].add(new Aresta(aresta.peso, aresta.inicio, aresta.fim));
+            listaDeAdjacencia[indiceVertice2].add(new Aresta(aresta.peso, aresta.fim, aresta.inicio));
         }
     }
     Conjunto find(Conjunto[] conjuntos, Character vertice) {
@@ -116,8 +116,8 @@ public class GrafoListaDeAdjacencia {
         for (int i = 0, e = 0; i < arestas.size(); i++, e++){
             Aresta proximaAresta = arestas.get(i);
 
-            Conjunto x = find(conjuntos, proximaAresta.vertice1);
-            Conjunto y = find(conjuntos, proximaAresta.vertice2);
+            Conjunto x = find(conjuntos, proximaAresta.inicio);
+            Conjunto y = find(conjuntos, proximaAresta.fim);
 
             if (!x.equals(y)) {
                 resultado.add(proximaAresta);
@@ -129,7 +129,7 @@ public class GrafoListaDeAdjacencia {
         for (Aresta item :
                 resultado) {
             if(item != null){
-                System.out.println(item.vertice1 +""+ item.vertice2);
+                System.out.println(item.inicio +""+ item.fim);
             }
         }
 
