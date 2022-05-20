@@ -9,7 +9,7 @@ public class GrafoMatrizDeAdjacencia {
     private final int[][] matrizDeAdjacencia;
     private final int quantidadeDeVertices;
 
-    public enum cores {
+    private enum cores {
         PRETO,
         CINZA,
         BRANCO
@@ -43,14 +43,14 @@ public class GrafoMatrizDeAdjacencia {
         }
     }
 
-    void printItems(cores[] matrizCores, Integer[] matrizDistancias, Character[] matrizParents){
+    private void printItems(cores[] matrizCores, Integer[] matrizDistancias, Character[] matrizParents){
+        System.out.println("=-=-=-=-=-=- Busca em largura =-=-=-=-=-=-=- \n");
         System.out.println("Cores: " + Arrays.toString(matrizCores));
         System.out.println("Distâncias: " + Arrays.toString(matrizDistancias));
-        System.out.println("Predencessores: " + Arrays.toString(matrizParents));
+        System.out.println("Predecessores: " + Arrays.toString(matrizParents) + "\n");
     }
 
     void BFS(char s) {
-
         cores[] cor = new cores[quantidadeDeVertices];
         Integer[] distancia = new Integer[quantidadeDeVertices];
         Character[] pais = new Character[quantidadeDeVertices];
@@ -67,6 +67,7 @@ public class GrafoMatrizDeAdjacencia {
 
         int currentIndex = vertices.indexOf(s);
         if(currentIndex == -1){
+            System.out.println("Vértice não encontrado");
             return;
         }
 
@@ -80,7 +81,6 @@ public class GrafoMatrizDeAdjacencia {
         {
             int u = fila.poll();
 
-            //Variável de incremento
             int verticePosition = 0;
             for (int v: matrizDeAdjacencia[u]) {
                 if(v == 1 && cor[verticePosition].equals(cores.BRANCO)){

@@ -1,12 +1,10 @@
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class GrafoListaDeAdjacencia {
 
-    public final LinkedList<Character> vertices;
-    public final LinkedList<Integer>[] listaDeAdjacencia;
-    public final int quantidadeDeVertices;
+    private final LinkedList<Character> vertices;
+    private final Map<Character, LinkedList<Character>> listaDeAdjacencia;
+    private final int quantidadeDeVertices;
 
     int clock;
 
@@ -16,96 +14,93 @@ public class GrafoListaDeAdjacencia {
         CINZA
     }
 
-    cores[] cor;
+    Map<Character, cores> cor;
 
-    Character[] parents;
+    Map<Character, Character> predecessores;
 
-    Integer[] descoberta;
+    Map<Character, Integer> descoberta;
 
-    Integer[] distanciaFinal;
+    Map<Character, Integer> distanciaFinal;
 
     public GrafoListaDeAdjacencia(Character[] vertices, String[] arestas) {
         this.vertices = new LinkedList<>(List.of(vertices));
         quantidadeDeVertices = this.vertices.size();
 
-        listaDeAdjacencia = new LinkedList[quantidadeDeVertices];
-        for (int i = 0; i < quantidadeDeVertices; i++) {
-            listaDeAdjacencia[i] = new LinkedList<>();
+        listaDeAdjacencia = new HashMap<>();
+
+        for (Character vertice: this.vertices) {
+            this.listaDeAdjacencia.put(vertice, new LinkedList<>());
         }
 
-        for (String edge : arestas) {
-            char vertex1 = edge.charAt(0);
-            char vertex2 = edge.charAt(1);
+        for (String aresta : arestas) {
+            char inicio = aresta.charAt(0);
+            char fim = aresta.charAt(1);
 
-            int indiceVertice1 = this.vertices.indexOf(vertex1);
-            int indiceVertice2 = this.vertices.indexOf(vertex2);
-
-            listaDeAdjacencia[indiceVertice1].add(indiceVertice2);
-            listaDeAdjacencia[indiceVertice2].add(indiceVertice1);
+            this.listaDeAdjacencia
+                    .get(inicio)
+                    .add(fim);
+            this.listaDeAdjacencia
+                    .get(fim)
+                    .add(inicio);
         }
     }
 
     public void DFS(){
-        this.cor = new cores[this.quantidadeDeVertices];
-        this.parents = new Character[this.quantidadeDeVertices];
-        this.descoberta = new Integer[this.quantidadeDeVertices];
-        this.distanciaFinal = new Integer[this.quantidadeDeVertices];
+        this.cor = new HashMap<>();
+        this.predecessores = new HashMap<>();
+        this.descoberta = new HashMap<>();
+        this.distanciaFinal = new HashMap<>();
 
-        int hold = 0;
-        for (char item: this.vertices) {
-            this.cor[hold] = cores.BRANCO;
-            this.parents[hold] = null;
-            this.descoberta[hold] = 0;
-            this.distanciaFinal[hold] = 0;
-            hold++;
+        for (Character item: this.vertices) {
+            this.cor.put(item, cores.BRANCO);
+            this.predecessores.put(item, null);
+            this.descoberta.put(item, 0);
+            this.distanciaFinal.put(item, 0);
         }
 
         this.clock = 0;
 
-        for (char item : this.vertices) {
-            int u = this.vertices.indexOf(item);
-            if(cor[u].equals(cores.BRANCO)){
-                DFS_VISIT(u);
+        for (Character item : this.vertices) {
+            if(cor.get(item).equals(cores.BRANCO)){
+                DFS_VISIT(item);
             }
         }
 
         printItems();
     }
 
-    private void DFS_VISIT(int u) {
-        this.cor[u] = cores.CINZA;
-        this.clock++;
-        this.descoberta[u] = this.clock;
+    private void printItems(){
+        System.out.println("=-=-=-=-=-=- Busca em profundidade =-=-=-=-=-=-=- \n");
+        System.out.println("Cores: " + cor.values());
+        System.out.println("Distâncias: " + descoberta.values());
+        System.out.println("Predecessores: " + predecessores.values());
+        System.out.println("Tempo final: " + distanciaFinal.values() + "\n");
+    }
 
-        for (int v : this.listaDeAdjacencia[u]){
-            if(cor[v].equals(cores.BRANCO)){
-                this.parents[v] = this.vertices.get(u);
+    private void DFS_VISIT(Character u) {
+        this.cor.put(u, cores.CINZA);
+        this.clock++;
+        this.descoberta.put(u, this.clock);
+
+        for (Character v : this.listaDeAdjacencia.get(u)) {
+            if(this.cor.get(v).equals(cores.BRANCO)){
+                this.predecessores.put(v, u);
                 DFS_VISIT(v);
             }
         }
-        cor[u] = cores.PRETO;
+        this.cor.put(u, cores.PRETO);
 
-        distanciaFinal[u] = ++this.clock;
-    }
-
-    void printItems(){
-        System.out.println("Cores: " + Arrays.toString(this.cor));
-        System.out.println("Distâncias: " + Arrays.toString(this.descoberta));
-        System.out.println("Predencessores: " + Arrays.toString(this.parents));
-        System.out.println("Tempo final: " + Arrays.toString(this.distanciaFinal));
+        this.distanciaFinal.put(u, ++this.clock);
     }
 
     @Override
     public String toString() {
         StringBuilder graph = new StringBuilder();
 
-        for (int i = 0; i < quantidadeDeVertices; i++) {
-            graph.append(vertices.get(i))
-                    .append(": ");
-            LinkedList<Integer> linkedList = listaDeAdjacencia[i];
-            for (Integer index : linkedList) {
-                graph.append(vertices.get(index))
-                        .append(" ");
+        for (Character vertice : this.vertices) {
+            graph.append(vertice).append(": ");
+            for (Character vertice2 : this.listaDeAdjacencia.get(vertice)){
+                graph.append(vertice2).append(" ");
             }
             graph.append("\n");
         }
