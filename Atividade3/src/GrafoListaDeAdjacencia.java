@@ -69,6 +69,7 @@ public class GrafoListaDeAdjacencia {
             }
         }
 
+        System.out.println("=-=-=-==-=-=- Kruskal's algorithm =-=-=-=-=-=-=-=\n");
         System.out.println("Conjunto final :" + conjuntos);
         System.out.println("Árvore gerada :" + resultado);
         ArrayList<Integer> pesos = resultado.stream()

@@ -1,0 +1,23 @@
+10 12
+A
+B
+C
+D
+E
+F
+G
+H
+I
+J
+AB 2
+BC 7
+BD 3
+CD 5
+DJ 8
+JG 1
+GE 2
+EF 2
+FG 4
+GH 6
+HI 9
+IJ 9

@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -5,40 +8,52 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        //Um grafo é uma coleção de vértices e arestas.
-        int quantidadeDeVertices = scanner.nextInt();
-        //Uma aresta é uma conexão entre dois vértices.
-        int quantidadeDeArestas = scanner.nextInt();
 
-        //Criando os arrays de vertices e arestas
-        Character[] vertices = new Character[quantidadeDeVertices];
-        Aresta[] arestas = new Aresta[quantidadeDeArestas];
+        Character[] vertices;
+        Aresta[] arestas;
 
-        for (int i = 0; i < quantidadeDeVertices; i++) {
-            vertices[i] = scanner.next().charAt(0);
-        }
+        try {
+            try (BufferedReader br = new BufferedReader(new FileReader("in/2.txt"))) {
+                String line = br.readLine();
+                Scanner scan = new Scanner(line);
 
-        for (int i = 0; i < quantidadeDeArestas; i++) {
-            String item =  scanner.next();
-            int value = scanner.nextInt();
-            arestas[i] = new Aresta(value, item.charAt(0), item.charAt(1));
+                int quantidadeDeVertices = scan.nextInt();
+                int quantidadeDeArestas = scan.nextInt();
+
+                vertices = new Character[quantidadeDeVertices];
+                arestas = new Aresta[quantidadeDeArestas];
+
+                for (int i = 0; i < quantidadeDeVertices; i++) {
+                    line = br.readLine();
+                    vertices[i] = line.charAt(0);
+                }
+
+                for (int i = 0; i < quantidadeDeArestas; i++) {
+                    line = br.readLine();
+                    Scanner scanTemp = new Scanner(line);
+                    String item =  scanTemp.next();
+                    int value = scanTemp.nextInt();
+                    arestas[i] = new Aresta(value, item.charAt(0), item.charAt(1));
+                }
+
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         try{
             GrafoMatrizDeAdjacencia grafoMatrizDeAdjacencia = new GrafoMatrizDeAdjacencia(vertices, arestas);
             GrafoListaDeAdjacencia grafoListaDeAdjacencia = new GrafoListaDeAdjacencia(vertices, arestas);
-            System.out.println("Grafo com matriz de Adjacência: ");
+            System.out.println("Grafo com matriz de adjacência: ");
             System.out.println(grafoMatrizDeAdjacencia);
-            System.out.println("=-=-=-==-=-=- Prim's algorithm =-=-=-=-=-=-=-=\n");
-            grafoMatrizDeAdjacencia.MST_PRIM('A');
             System.out.println("Grafo com lista de adjacência: ");
             System.out.println(grafoListaDeAdjacencia);
-            System.out.println("=-=-=-==-=-=- Kruskal's algorithm =-=-=-=-=-=-=-=\n");
+
+            System.out.print("Vértice de partida: ");
+            grafoMatrizDeAdjacencia.MST_PRIM(scanner.next().charAt(0));
             grafoListaDeAdjacencia.MST_KRUSKAL();
         } catch (NoSuchFieldException e) {
             System.out.println(e.getMessage());
         }
-
-        //grafoListaDeAdjacencia.DFS();
     }
 }

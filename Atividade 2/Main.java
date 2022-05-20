@@ -41,7 +41,8 @@ public class Main {
         System.out.println(grafoMatrizDeAdjacencia);
         System.out.println("Grafo com lista de adjacência: ");
         System.out.println(grafoListaDeAdjacencia);
-        System.out.print("Vértice de partida:");
+
+        System.out.print("Vértice de partida: ");
         grafoMatrizDeAdjacencia.BFS(scanner.next().strip().charAt(0));
         grafoListaDeAdjacencia.DFS();
     }

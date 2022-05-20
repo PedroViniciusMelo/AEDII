@@ -74,6 +74,7 @@ public class GrafoMatrizDeAdjacencia {
             }
         }
 
+        System.out.println("=-=-=-==-=-=- Prim's algorithm =-=-=-=-=-=-=-=\n");
         System.out.println("Predecessores :" + Arrays.toString(predecessores));
         System.out.println("Chaves :" + Arrays.toString(chaves));
         System.out.println("Soma dos pesos mínimos da árvore gerada: " + IntStream.of(chaves).sum() + "\n");
