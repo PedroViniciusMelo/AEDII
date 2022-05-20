@@ -24,16 +24,21 @@ public class Main {
             arestas[i] = new Aresta(value, item.charAt(0), item.charAt(1));
         }
 
-        GrafoMatrizDeAdjacencia grafoMatrizDeAdjacencia = new GrafoMatrizDeAdjacencia(vertices, arestas);
-        GrafoListaDeAdjacencia grafoListaDeAdjacencia = new GrafoListaDeAdjacencia(vertices, arestas);
-        System.out.println("Grafo com matriz de Adjacência: ");
-        System.out.println(grafoMatrizDeAdjacencia);
-        System.out.println("Grafo com lista de adjacências: ");
-        System.out.println(grafoListaDeAdjacencia);
-        System.out.println("Grafo com matriz de Adjacência: \n");
-        grafoMatrizDeAdjacencia.MST_PRIM('A');
-        System.out.println("Grafo com lista de adjacências: \n");
-        grafoListaDeAdjacencia.MST_KRUSKAL();
+        try{
+            GrafoMatrizDeAdjacencia grafoMatrizDeAdjacencia = new GrafoMatrizDeAdjacencia(vertices, arestas);
+            GrafoListaDeAdjacencia grafoListaDeAdjacencia = new GrafoListaDeAdjacencia(vertices, arestas);
+            System.out.println("Grafo com matriz de Adjacência: ");
+            System.out.println(grafoMatrizDeAdjacencia);
+            System.out.println("=-=-=-==-=-=- Prim's algorithm =-=-=-=-=-=-=-=\n");
+            grafoMatrizDeAdjacencia.MST_PRIM('A');
+            System.out.println("Grafo com lista de adjacência: ");
+            System.out.println(grafoListaDeAdjacencia);
+            System.out.println("=-=-=-==-=-=- Kruskal's algorithm =-=-=-=-=-=-=-=\n");
+            grafoListaDeAdjacencia.MST_KRUSKAL();
+        } catch (NoSuchFieldException e) {
+            System.out.println(e.getMessage());
+        }
+
         //grafoListaDeAdjacencia.DFS();
     }
 }

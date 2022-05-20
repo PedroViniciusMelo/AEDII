@@ -1,6 +1,8 @@
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.stream.IntStream;
 
 public class GrafoMatrizDeAdjacencia {
 
@@ -9,12 +11,6 @@ public class GrafoMatrizDeAdjacencia {
     private final int[][] matrizDeAdjacencia;
     private final int quantidadeDeVertices;
 
-    public enum cores {
-        PRETO,
-        CINZA,
-        BRANCO
-    }
-
     public GrafoMatrizDeAdjacencia(Character[] vertices, Aresta[] arestas) {
         this.vertices = new LinkedList<>(List.of(vertices));
         quantidadeDeVertices = this.vertices.size();
@@ -22,11 +18,7 @@ public class GrafoMatrizDeAdjacencia {
         matrizDeAdjacencia = new int[quantidadeDeVertices][quantidadeDeVertices];
         for (int i = 0; i < quantidadeDeVertices; i++) {
             for (int j = 0; j < quantidadeDeVertices; j++) {
-                if (i == j) {
-                    matrizDeAdjacencia[i][j] = 1;
-                } else {
-                    matrizDeAdjacencia[i][j] = 0;
-                }
+                matrizDeAdjacencia[i][j] = 0;
             }
         }
 
@@ -40,78 +32,51 @@ public class GrafoMatrizDeAdjacencia {
         }
     }
 
-    void printItems(cores[] matrizCores, Integer[] matrizDistancias, Character[] matrizParents){
-        System.out.println("Cores: " + Arrays.toString(matrizCores));
-        System.out.println("Distâncias: " + Arrays.toString(matrizDistancias));
-        System.out.println("Predencessores: " + Arrays.toString(matrizParents));
-    }
-
-    int menor(LinkedList<Integer> list){
-        if(list.isEmpty()){
-          return -1;
-        }
-        int menor = list.get(0);
-        int indice = 0;
-        int count = 0;
-        for (int item : list) {
-            if(item < menor){
-                menor = item;
-                indice = count;
-            }
-            count++;
-        }
-
-        list.remove(indice);
-        return menor;
-    }
-
-    LinkedList<Aresta> getVizinhos(int s){
-        LinkedList<Aresta> vizinhos = new LinkedList<>();
-        for(int i = 0; i < this.quantidadeDeVertices; i++){
-            if(this.matrizDeAdjacencia[s][i] > 0 && i != s){
-                vizinhos.add(new Aresta(this.matrizDeAdjacencia[s][i], this.vertices.get(s), this.vertices.get(i)));
-            }
-        }
-        return vizinhos;
-    }
-
-    void MST_PRIM(char s) {
+    void MST_PRIM(Character s) throws NoSuchFieldException {
         int[] chaves = new int[this.quantidadeDeVertices];
-        Character[] parents = new Character[this.quantidadeDeVertices];
+        Character[] predecessores = new Character[this.quantidadeDeVertices];
 
         Arrays.fill(chaves, Integer.MAX_VALUE);
-        Arrays.fill(parents, null);
+        Arrays.fill(predecessores, null);
 
         int selecionado = this.vertices.indexOf(s);
 
-        if(selecionado == -1){
-            return;
+        if (selecionado == -1) {
+            throw new NoSuchFieldException(s.toString());
         }
 
         chaves[selecionado] = 0;
 
-        LinkedList<Integer> fila = new LinkedList<>();
-        fila.add(selecionado);
-        for (int i = 0; i < quantidadeDeVertices; i++){
-            if(i != selecionado){
-                fila.add(i);
-            }
+        PriorityQueue<ArestaSimplificada> fila = new PriorityQueue<>();
+
+        int count = 0;
+        for (Character vertices : this.vertices) {
+            fila.add(new ArestaSimplificada(vertices, chaves[count]));
+            count++;
         }
 
-
         while (!fila.isEmpty()) {
-            int min = menor(fila);
+            ArestaSimplificada aresta = fila.poll();
+            int u = vertices.indexOf(aresta.aresta);
 
-            for (Aresta aresta : getVizinhos(min)) {
-                int indexFim = this.vertices.indexOf(aresta.fim);
-                if(fila.contains(indexFim) && aresta.peso < chaves[indexFim]){
-                    parents[indexFim] = this.vertices.get(min);
-                    chaves[indexFim] = aresta.peso;
+            for (int i = 0; i < this.quantidadeDeVertices; i++) {
+                if (this.matrizDeAdjacencia[u][i] > 0) {
+                    ArestaSimplificada hold = new ArestaSimplificada(vertices.get(i), 0);
+                    if (fila.contains(hold) && this.matrizDeAdjacencia[u][i] < chaves[i]) {
+                        predecessores[i] = this.vertices.get(u);
+                        chaves[i] = this.matrizDeAdjacencia[u][i];
+
+                        fila.remove(hold);
+                        hold.chave = chaves[i];
+                        fila.add(hold);
+                    }
                 }
             }
         }
-        System.out.println("Parents :" + Arrays.toString(parents));
-        System.out.println("Keys :" + Arrays.toString(chaves));
+
+        System.out.println("Predecessores :" + Arrays.toString(predecessores));
+        System.out.println("Chaves :" + Arrays.toString(chaves));
+        System.out.println("Soma dos pesos mínimos da árvore gerada: " + IntStream.of(chaves).sum() + "\n");
     }
 
     @Override
@@ -120,17 +85,15 @@ public class GrafoMatrizDeAdjacencia {
 
         grafo.append("\t");
         for (Character vertex : vertices) {
-            grafo.append(vertex)
-                    .append("\t");
+            grafo.append(vertex).append("\t");
         }
+
         grafo.append("\n");
 
         for (int i = 0; i < quantidadeDeVertices; i++) {
-            grafo.append(vertices.get(i))
-                    .append("\t");
+            grafo.append(vertices.get(i)).append("\t");
             for (int j = 0; j < quantidadeDeVertices; j++) {
-                grafo.append(matrizDeAdjacencia[i][j])
-                        .append("\t");
+                grafo.append(matrizDeAdjacencia[i][j]).append("\t");
             }
             grafo.append("\n");
         }

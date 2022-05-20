@@ -1,110 +1,56 @@
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class GrafoListaDeAdjacencia {
-
     public final LinkedList<Character> vertices;
-    public final LinkedList<Aresta>[] listaDeAdjacencia;
+    public final Map<Character, LinkedList<Aresta>> listaDeAdjacencia;
     public final int quantidadeDeVertices;
-
-    int clock;
-
-    public enum cores {
-        BRANCO,
-        PRETO,
-        CINZA
-    }
-
-    cores[] cor;
-
-    Character[] parents;
-
-    Integer[] descoberta;
-
-    Integer[] distanciaFinal;
-
-    class Conjunto {
-        String parent;
-        int index;
-
-
-        public Conjunto(String parent, int index){
-            this.parent = parent;
-            this.index = index;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (o == this) {
-                return true;
-            }
-
-            if (!(o instanceof Conjunto)) {
-                return false;
-            }
-
-            Conjunto conjunto = (Conjunto) o;
-
-            return this.parent.equals(conjunto.parent);
-        }
-
-        @Override
-        public String toString(){
-            return this.parent + " [" + index + "]" ;
-        }
-
-    }
 
     public GrafoListaDeAdjacencia(Character[] vertices, Aresta[] arestas) {
         this.vertices = new LinkedList<>(List.of(vertices));
         quantidadeDeVertices = this.vertices.size();
 
-        listaDeAdjacencia = new LinkedList[quantidadeDeVertices];
-        for (int i = 0; i < quantidadeDeVertices; i++) {
-            listaDeAdjacencia[i] = new LinkedList<>();
+        listaDeAdjacencia = new HashMap<>();
+        for (char vertice: this.vertices) {
+            this.listaDeAdjacencia.put(vertice, new LinkedList<>());
         }
 
         for (Aresta aresta : arestas) {
-            int indiceVertice1 = this.vertices.indexOf(aresta.inicio);
-            int indiceVertice2 = this.vertices.indexOf(aresta.fim);
-
-            listaDeAdjacencia[indiceVertice1].add(new Aresta(aresta.peso, aresta.inicio, aresta.fim));
-            listaDeAdjacencia[indiceVertice2].add(new Aresta(aresta.peso, aresta.fim, aresta.inicio));
+            this.listaDeAdjacencia
+                    .get(aresta.inicio)
+                    .add(new Aresta(aresta.peso, aresta.inicio, aresta.fim));
+            this.listaDeAdjacencia
+                    .get(aresta.fim)
+                    .add(new Aresta(aresta.peso, aresta.inicio, aresta.fim));
         }
     }
-    Conjunto find(Conjunto[] conjuntos, Character vertice) {
-        for (Conjunto conjunto : conjuntos) {
-            if(conjunto != null && conjunto.parent.contains(vertice.toString())){
+    private String find(Set<String> conjuntos, Character vertice) throws NoSuchFieldException {
+        for (String conjunto : conjuntos) {
+            if(conjunto.contains(vertice.toString()))
                 return conjunto;
-            }
         }
-        return null;
+
+        throw new NoSuchFieldException(vertices.toString());
     }
 
-    void Union(Conjunto[] subsets, Conjunto x, Conjunto y) {
-        Conjunto uniao = new Conjunto(x.parent + y.parent, 0);
-
-        uniao.index = y.index;
-        subsets[y.index] = uniao;
-        subsets[x.index] = null;
+    private void uniao(Set<String> subsets, String x, String y) {
+        subsets.remove(x);
+        subsets.remove(y);
+        subsets.add(x + y);
     }
 
 
-    public void MST_KRUSKAL(){
-        Conjunto[] conjuntos = new Conjunto[quantidadeDeVertices];
-        LinkedList<Aresta> arestas = new LinkedList<Aresta>();
-        LinkedList<Aresta> resultado = new LinkedList<Aresta>();
+    public void MST_KRUSKAL() throws NoSuchFieldException {
+        Set<String> conjuntos = new HashSet<>();
+        LinkedList<Aresta> arestas = new LinkedList<>();
+        LinkedList<Aresta> resultado = new LinkedList<>();
 
-        int count = 0;
         for (Character item: vertices) {
-            conjuntos[count] = new Conjunto(item.toString(), count);
-            count++;
+            conjuntos.add(item.toString());
         }
 
-        for (LinkedList<Aresta> hold : this.listaDeAdjacencia) {
-            for (Aresta aresta : hold){
+        for (Map.Entry<Character, LinkedList<Aresta>> lista : this.listaDeAdjacencia.entrySet()) {
+            for (Aresta aresta : lista.getValue()){
                 if(!arestas.contains(aresta)){
                     arestas.add(aresta);
                 }
@@ -113,50 +59,37 @@ public class GrafoListaDeAdjacencia {
 
         Collections.sort(arestas);
 
-        for (int i = 0, e = 0; i < arestas.size(); i++, e++){
-            Aresta proximaAresta = arestas.get(i);
-
-            Conjunto x = find(conjuntos, proximaAresta.inicio);
-            Conjunto y = find(conjuntos, proximaAresta.fim);
+        for (Aresta aresta : arestas) {
+            String x = find(conjuntos, aresta.inicio);
+            String y = find(conjuntos, aresta.fim);
 
             if (!x.equals(y)) {
-                resultado.add(proximaAresta);
-                Union(conjuntos, x, y);
-            }
-        }
-        System.out.println(Arrays.toString(conjuntos));
-
-        for (Aresta item :
-                resultado) {
-            if(item != null){
-                System.out.println(item.inicio +""+ item.fim);
+                resultado.add(aresta);
+                uniao(conjuntos, x, y);
             }
         }
 
-    }
-
-    void printItems(){
-        System.out.println("Cores: " + Arrays.toString(this.cor));
-        System.out.println("Distâncias: " + Arrays.toString(this.descoberta));
-        System.out.println("Predencessores: " + Arrays.toString(this.parents));
-        System.out.println("Tempo final: " + Arrays.toString(this.distanciaFinal));
+        System.out.println("Conjunto final :" + conjuntos);
+        System.out.println("Árvore gerada :" + resultado);
+        ArrayList<Integer> pesos = resultado.stream()
+                .map(Aresta::getPeso)
+                .collect(Collectors.toCollection(ArrayList::new));
+        System.out.println("Soma dos pesos mínimos da árvore gerada: " + pesos.stream().mapToInt(Integer::intValue).sum() + "\n");
     }
 
    @Override
     public String toString() {
         StringBuilder graph = new StringBuilder();
 
-        for (int i = 0; i < quantidadeDeVertices; i++) {
-            graph.append(vertices.get(i))
-                    .append(": ");
-            LinkedList<Aresta> linkedList = listaDeAdjacencia[i];
-            for (Aresta index : linkedList) {
-                graph.append(" ").append(index).append('\t')
-                ;
-            }
-            graph.append("\n");
-        }
-
+       for (Character vertice: this.vertices) {
+           graph.append(vertice).append(": ");
+           LinkedList<Aresta> linkedList = this.listaDeAdjacencia.get(vertice);
+           for (Aresta index : linkedList) {
+               String info = index.fim + "[" + index.peso + "]";
+               graph.append(" ").append(info).append('\t');
+           }
+           graph.append("\n");
+       }
         return graph.toString();
     }
 }

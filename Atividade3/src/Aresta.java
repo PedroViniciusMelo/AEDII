@@ -11,9 +11,21 @@ public class Aresta implements Comparable<Aresta>{
         this.fim = fim;
     }
 
+    public int getPeso() {
+        return peso;
+    }
+
+    public Character getInicio() {
+        return inicio;
+    }
+
+    public Character getFim() {
+        return fim;
+    }
+
     @Override
     public String toString() {
-        return fim + "[" + this.peso + "]";
+        return inicio.toString() + fim + "[" + this.peso + "]";
     }
 
 
