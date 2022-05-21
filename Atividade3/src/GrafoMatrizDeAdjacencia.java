@@ -57,7 +57,7 @@ public class GrafoMatrizDeAdjacencia {
 
         while (!fila.isEmpty()) {
             ArestaSimplificada aresta = fila.poll();
-            int u = vertices.indexOf(aresta.aresta);
+            int u = vertices.indexOf(aresta.vertice);
 
             for (int i = 0; i < this.quantidadeDeVertices; i++) {
                 if (this.matrizDeAdjacencia[u][i] > 0) {

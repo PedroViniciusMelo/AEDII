@@ -1,10 +1,10 @@
 public class ArestaSimplificada implements Comparable<ArestaSimplificada>{
-    Character aresta;
+    Character vertice;
 
     int chave;
 
-    public ArestaSimplificada(Character aresta, int chave) {
-        this.aresta = aresta;
+    public ArestaSimplificada(Character vertice, int chave) {
+        this.vertice = vertice;
         this.chave = chave;
     }
 
@@ -25,6 +25,6 @@ public class ArestaSimplificada implements Comparable<ArestaSimplificada>{
 
         ArestaSimplificada aresta = (ArestaSimplificada) o;
 
-        return this.aresta == aresta.aresta;
+        return this.vertice == aresta.vertice;
     }
 }

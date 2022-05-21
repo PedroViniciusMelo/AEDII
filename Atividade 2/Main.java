@@ -10,7 +10,7 @@ public class Main {
         String[] arestas;
 
         try {
-            try (BufferedReader br = new BufferedReader(new FileReader("in/8.txt"))) {
+            try (BufferedReader br = new BufferedReader(new FileReader("in/2.txt"))) {
                 String line = br.readLine();
                 Scanner scan = new Scanner(line);
 

@@ -8,12 +8,11 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-
         Character[] vertices;
         Aresta[] arestas;
 
         try {
-            try (BufferedReader br = new BufferedReader(new FileReader("in/2.txt"))) {
+            try (BufferedReader br = new BufferedReader(new FileReader("in/1.txt"))) {
                 String line = br.readLine();
                 Scanner scan = new Scanner(line);
 
@@ -35,7 +34,6 @@ public class Main {
                     int value = scanTemp.nextInt();
                     arestas[i] = new Aresta(value, item.charAt(0), item.charAt(1));
                 }
-
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
